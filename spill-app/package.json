@@ -1,0 +1,24 @@
+{
+  "name": "spill-app",
+  "version": "1.0.0",
+  "description": "Spill - A safe, inclusive dating review app for LGBTQ+ community",
+  "private": true,
+  "workspaces": [
+    "mobile",
+    "backend"
+  ],
+  "scripts": {
+    "mobile": "cd mobile && npm start",
+    "backend": "cd backend && npm run dev",
+    "install-all": "npm install && cd mobile && npm install && cd ../backend && npm install"
+  },
+  "keywords": [
+    "lgbtq",
+    "dating",
+    "review",
+    "community",
+    "react-native"
+  ],
+  "author": "DimeClark",
+  "license": "MIT"
+}
