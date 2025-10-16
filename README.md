@@ -1,10 +1,25 @@
-- 👋 Hi, I’m @DimeClark
-- 👀 I’m interested in Software Development and Cybersecurity
-- 🌱 I’m currently learning Web Dev using HTML5 and CSS3
-- 💞️ I’m looking to collaborate on projects related to web applications, software development, and cybersecurity initiatives
-- 📫 How to reach me [dimeclark5@gmail.com] | [www.linkedin.com/in/Diamond-Clark21] | [862.270.8223]
+- 👋 Hi, I'm @DimeClark
+- 👀 I'm interested in Software Development and Cybersecurity
+- 🌱 I'm currently learning Web Dev using HTML5 and CSS3
+- 💞️ I'm looking to collaborate on projects related to web applications, software development, and cybersecurity initiatives
+- 📫 How to reach me [www.linkedin.com/in/Diamond-Clark21]
 - 😄 Pronouns: She/Her
 - ⚡ Fun fact: I co-founded the Girls in Computer Science club at Essex County College, and I've interned at Beats By Dre and Microsoft!
+
+## 🏳️‍🌈 Featured Project: Spill
+
+**Spill** is a safe, inclusive dating review app for the LGBTQ+ community. It allows users to share authentic dating experiences, search for reviews before meeting someone, and use AI-powered message analysis to detect red flags.
+
+[View Project →](./spill-app)
+
+### Key Features:
+- 🔐 Anonymous posting with verified LGBTQ+ badges
+- 🤖 AI Vibe Check for message analysis
+- 🔍 Advanced search and filtering
+- 🛡️ Safe Date Tips hub and crisis resources
+- ☕ Share Spills, Sips, and Brews about dating experiences
+
+Built with React Native, Node.js, Express, and MongoDB.
 
 <!---
 DimeClark/DimeClark is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
