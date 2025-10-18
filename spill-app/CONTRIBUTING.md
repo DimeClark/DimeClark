@@ -179,22 +179,67 @@ router.post('/', authMiddleware, async (req, res) => {
 
 ## Testing
 
+### Testing Requirements
+All new features must include tests. We use:
+- **Backend**: Jest + Supertest for API testing
+- **Mobile**: Jest + React Native Testing Library
+
 ### Testing Guidelines
 - Write tests for new features
 - Ensure existing tests pass
-- Test edge cases
-- Test error handling
+- Test edge cases and error handling
+- Aim for >80% code coverage
+- Mock external dependencies
+- Test authentication flows
 
 ### Running Tests
 ```bash
 # Backend tests
 cd backend
-npm test
+npm test                 # Run all tests
+npm run test:watch       # Watch mode
+npm run test:coverage    # With coverage
 
 # Mobile tests
 cd mobile
-npm test
+npm test                 # Run all tests
+npm run test:watch       # Watch mode
+npm run test:coverage    # With coverage
 ```
+
+### Writing Tests
+
+**Backend Example:**
+```javascript
+describe('POST /api/posts', () => {
+  it('should create a new post', async () => {
+    const response = await request(app)
+      .post('/api/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'spill', content: 'Test' });
+
+    expect(response.status).toBe(201);
+    expect(response.body.post).toHaveProperty('_id');
+  });
+});
+```
+
+**Mobile Example:**
+```typescript
+import { render, fireEvent } from '@testing-library/react-native';
+import PostCard from '../components/PostCard';
+
+describe('PostCard', () => {
+  it('should render post content', () => {
+    const { getByText } = render(
+      <PostCard post={{ content: 'Test post' }} />
+    );
+    expect(getByText('Test post')).toBeTruthy();
+  });
+});
+```
+
+See [docs/TESTING.md](./docs/TESTING.md) for detailed testing guide.
 
 ## Design Guidelines
 

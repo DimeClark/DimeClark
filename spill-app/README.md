@@ -54,36 +54,53 @@
 
 ```
 spill-app/
-├── mobile/                 # React Native mobile app
-│   ├── app/               # App screens and navigation
-│   │   ├── (tabs)/       # Main tab screens
-│   │   │   ├── feed.tsx  # Main feed
+├── mobile/                    # React Native mobile app
+│   ├── app/                  # App screens and navigation
+│   │   ├── (tabs)/          # Main tab screens
+│   │   │   ├── feed.tsx     # Main feed
 │   │   │   ├── search.tsx
 │   │   │   ├── vibe-check.tsx
 │   │   │   └── profile.tsx
-│   │   ├── auth/         # Authentication screens
+│   │   ├── auth/            # Authentication screens
 │   │   │   ├── login.tsx
 │   │   │   └── signup.tsx
-│   │   ├── _layout.tsx   # Root layout
-│   │   └── index.tsx     # Onboarding screen
-│   ├── components/       # Reusable components
-│   ├── services/         # API services
-│   └── utils/            # Utility functions
+│   │   ├── _layout.tsx      # Root layout
+│   │   └── index.tsx        # Onboarding screen
+│   ├── services/            # API services & utilities
+│   │   └── sentry.ts        # Error tracking
+│   ├── __tests__/           # Test files
+│   └── package.json
 │
-├── backend/               # Node.js backend API
-│   ├── models/           # MongoDB models
+├── backend/                   # Node.js backend API
+│   ├── models/               # MongoDB models
 │   │   ├── User.js
 │   │   └── Post.js
-│   ├── routes/           # API routes
+│   ├── routes/               # API routes
 │   │   ├── auth.js
 │   │   ├── users.js
 │   │   ├── posts.js
 │   │   └── vibe-check.js
-│   ├── middleware/       # Custom middleware
+│   ├── middleware/           # Custom middleware
 │   │   └── auth.js
-│   └── server.js         # Main server file
+│   ├── tests/                # Test suite
+│   │   ├── auth.test.js
+│   │   ├── posts.test.js
+│   │   ├── users.test.js
+│   │   └── vibe-check.test.js
+│   ├── server.js             # Main server file
+│   ├── Dockerfile            # Docker configuration
+│   └── package.json
 │
-└── docs/                 # Documentation
+├── docs/                      # Documentation
+│   ├── API.md                # API reference
+│   ├── ARCHITECTURE.md       # System design
+│   ├── DESIGN.md             # UI/UX specs
+│   ├── DEPLOYMENT.md         # Deployment guide
+│   ├── TESTING.md            # Testing guide
+│   ├── COMMUNITY_GUIDELINES.md
+│   └── UI_SCREENSHOTS.md
+│
+└── docker-compose.yml         # Docker orchestration
 ```
 
 ## 🛠️ Installation & Setup
@@ -186,6 +203,131 @@ The Vibe Check feature uses sentiment analysis to evaluate messages for:
 3. Returns a Vibe Score (0-100) with color-coded level
 4. Provides specific indicators and recommendations
 
+## 🧪 Testing
+
+### Backend Tests
+```bash
+cd spill-app/backend
+npm test                 # Run all tests
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Run tests with coverage report
+```
+
+**Test Coverage:**
+- ✅ Authentication routes (registration, login, JWT)
+- ✅ Post routes (CRUD, likes, comments, flagging)
+- ✅ User routes (profile management, search)
+- ✅ Vibe Check (sentiment analysis, red/green flags)
+
+### Mobile App Tests
+```bash
+cd spill-app/mobile
+npm test                 # Run all tests
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Run tests with coverage
+```
+
+See [Testing Guide](./docs/TESTING.md) for detailed information.
+
+## 📊 Error Tracking & Monitoring
+
+### Sentry Integration
+The app includes Sentry for real-time error tracking:
+
+**Backend:**
+- Automatic error capture
+- Performance monitoring
+- Request tracing
+
+**Mobile:**
+- Crash reporting
+- User feedback
+- Performance metrics
+
+Configure by setting `SENTRY_DSN` in environment variables.
+
+### Health Monitoring
+Backend includes a health check endpoint:
+```bash
+curl http://localhost:3000/health
+```
+
+Returns server status, uptime, and timestamp.
+
+## 🚀 Deployment
+
+### Quick Deploy Options
+
+#### Docker Compose (Recommended for local/testing)
+```bash
+cd spill-app
+docker-compose up -d
+```
+
+#### Heroku
+```bash
+cd spill-app/backend
+heroku create spill-app-api
+heroku config:set NODE_ENV=production MONGODB_URI=your-uri JWT_SECRET=your-secret
+git push heroku main
+```
+
+#### Render
+1. Connect your GitHub repository
+2. Select `spill-app/backend` as root directory
+3. Set environment variables
+4. Deploy automatically on push
+
+### Mobile App Publishing
+
+#### iOS App Store
+```bash
+cd spill-app/mobile
+eas build --platform ios
+eas submit --platform ios
+```
+
+#### Google Play Store
+```bash
+cd spill-app/mobile
+eas build --platform android
+eas submit --platform android
+```
+
+See [Deployment Guide](./docs/DEPLOYMENT.md) for comprehensive instructions.
+
+## 🔧 Production Configuration
+
+### Environment Variables
+
+**Backend (.env):**
+```env
+NODE_ENV=production
+PORT=3000
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=your-secure-secret
+SENTRY_DSN=https://...@sentry.io/...
+```
+
+**Mobile (app.json):**
+```json
+{
+  "extra": {
+    "apiUrl": "https://your-api-domain.com",
+    "sentryDsn": "https://...@sentry.io/..."
+  }
+}
+```
+
+### Security Features
+- ✅ Rate limiting on all routes
+- ✅ Stricter rate limiting on auth endpoints
+- ✅ JWT token authentication
+- ✅ Password hashing with bcrypt
+- ✅ CORS configuration
+- ✅ Request validation
+- ✅ Error tracking with Sentry
+
 ## 🔮 Future Enhancements
 
 - [ ] Real-time messaging
@@ -197,29 +339,29 @@ The Vibe Check feature uses sentiment analysis to evaluate messages for:
 - [ ] Verified user profiles
 - [ ] Multi-language support
 
-## 📄 API Documentation
+## 📖 Documentation
 
-### Authentication Endpoints
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/oauth/apple` - Apple OAuth
-- `POST /api/auth/oauth/google` - Google OAuth
+### Complete Guides
+- **[API Documentation](./docs/API.md)** - Complete API reference with examples
+- **[Deployment Guide](./docs/DEPLOYMENT.md)** - Deploy to Heroku, Render, AWS, or app stores
+- **[Testing Guide](./docs/TESTING.md)** - Run and write tests
+- **[Architecture](./docs/ARCHITECTURE.md)** - System design and data flow
+- **[Design System](./docs/DESIGN.md)** - UI/UX specifications
+- **[Production Checklist](./docs/PRODUCTION_CHECKLIST.md)** - Pre-launch verification
+- **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute
+- **[Quick Start](./QUICKSTART.md)** - Get started in 10 minutes
+- **[Completion Summary](./COMPLETION_SUMMARY.md)** - What's been built
 
-### User Endpoints
-- `GET /api/users/profile` - Get user profile (protected)
-- `PUT /api/users/profile` - Update profile (protected)
-- `GET /api/users/search` - Search users
+### Quick Reference
 
-### Post Endpoints
-- `GET /api/posts` - Get all posts (feed)
-- `POST /api/posts` - Create post (protected)
-- `POST /api/posts/:id/like` - Like/unlike post (protected)
-- `POST /api/posts/:id/comment` - Add comment (protected)
-- `POST /api/posts/:id/flag` - Flag post (protected)
+#### API Endpoints
+- **Auth**: `POST /api/auth/register`, `POST /api/auth/login`
+- **Users**: `GET /api/users/profile`, `PUT /api/users/profile`, `GET /api/users/search`
+- **Posts**: `GET /api/posts`, `POST /api/posts`, `POST /api/posts/:id/like`
+- **Vibe Check**: `POST /api/vibe-check/analyze`
+- **Health**: `GET /health` (monitoring)
 
-### Vibe Check Endpoints
-- `POST /api/vibe-check/analyze` - Analyze message (protected)
-- `GET /api/vibe-check/history` - Get analysis history (protected)
+See [API.md](./docs/API.md) for complete details.
 
 ## 👥 Contributing
 
