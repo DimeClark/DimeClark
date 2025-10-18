@@ -6,17 +6,58 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const Sentry = require('@sentry/node');
+const rateLimit = require('express-rate-limit');
 
 // Load environment variables
 dotenv.config();
+
+const app = express();
+
+// Initialize Sentry for error tracking
+if (process.env.SENTRY_DSN && process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV || 'development',
+    tracesSampleRate: 1.0,
+  });
+  
+  // RequestHandler creates a separate execution context using domains
+  app.use(Sentry.Handlers.requestHandler());
+  // TracingHandler creates a trace for every incoming request
+  app.use(Sentry.Handlers.tracingHandler());
+}
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// Apply rate limiting to all routes
+if (process.env.NODE_ENV === 'production') {
+  app.use(limiter);
+}
+
+// Stricter rate limit for auth endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5, // 5 requests per 15 minutes
+  message: 'Too many authentication attempts, please try again later.',
+});
+
+// Apply stricter rate limit to auth routes
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 
 // Import routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const vibeCheckRoutes = require('./routes/vibe-check');
-
-const app = express();
 
 // Middleware
 app.use(cors());
@@ -48,6 +89,20 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/vibe-check', vibeCheckRoutes);
+
+// Health check endpoint for monitoring
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
+
+// Sentry error handler must be before other error handlers
+if (process.env.SENTRY_DSN && process.env.NODE_ENV === 'production') {
+  app.use(Sentry.Handlers.errorHandler());
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
