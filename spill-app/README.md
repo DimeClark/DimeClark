@@ -339,29 +339,29 @@ SENTRY_DSN=https://...@sentry.io/...
 - [ ] Verified user profiles
 - [ ] Multi-language support
 
-## 📄 API Documentation
+## 📖 Documentation
 
-### Authentication Endpoints
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/oauth/apple` - Apple OAuth
-- `POST /api/auth/oauth/google` - Google OAuth
+### Complete Guides
+- **[API Documentation](./docs/API.md)** - Complete API reference with examples
+- **[Deployment Guide](./docs/DEPLOYMENT.md)** - Deploy to Heroku, Render, AWS, or app stores
+- **[Testing Guide](./docs/TESTING.md)** - Run and write tests
+- **[Architecture](./docs/ARCHITECTURE.md)** - System design and data flow
+- **[Design System](./docs/DESIGN.md)** - UI/UX specifications
+- **[Production Checklist](./docs/PRODUCTION_CHECKLIST.md)** - Pre-launch verification
+- **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute
+- **[Quick Start](./QUICKSTART.md)** - Get started in 10 minutes
+- **[Completion Summary](./COMPLETION_SUMMARY.md)** - What's been built
 
-### User Endpoints
-- `GET /api/users/profile` - Get user profile (protected)
-- `PUT /api/users/profile` - Update profile (protected)
-- `GET /api/users/search` - Search users
+### Quick Reference
 
-### Post Endpoints
-- `GET /api/posts` - Get all posts (feed)
-- `POST /api/posts` - Create post (protected)
-- `POST /api/posts/:id/like` - Like/unlike post (protected)
-- `POST /api/posts/:id/comment` - Add comment (protected)
-- `POST /api/posts/:id/flag` - Flag post (protected)
+#### API Endpoints
+- **Auth**: `POST /api/auth/register`, `POST /api/auth/login`
+- **Users**: `GET /api/users/profile`, `PUT /api/users/profile`, `GET /api/users/search`
+- **Posts**: `GET /api/posts`, `POST /api/posts`, `POST /api/posts/:id/like`
+- **Vibe Check**: `POST /api/vibe-check/analyze`
+- **Health**: `GET /health` (monitoring)
 
-### Vibe Check Endpoints
-- `POST /api/vibe-check/analyze` - Analyze message (protected)
-- `GET /api/vibe-check/history` - Get analysis history (protected)
+See [API.md](./docs/API.md) for complete details.
 
 ## 👥 Contributing
 
