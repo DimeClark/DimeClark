@@ -16,21 +16,36 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dimeclark.spill"
+      "bundleIdentifier": "com.dimeclark.spill",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.dimeclark.spill"
+      "package": "com.dimeclark.spill",
+      "versionCode": 1,
+      "permissions": [
+        "INTERNET"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@sentry/react-native/expo"
     ],
-    "scheme": "spill"
+    "scheme": "spill",
+    "extra": {
+      "apiUrl": "http://localhost:3000",
+      "sentryDsn": "",
+      "environment": "development",
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
+    },
+    "owner": "dimeclark"
   }
 }

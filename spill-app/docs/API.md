@@ -2,7 +2,44 @@
 
 ## Base URL
 ```
-http://localhost:3000/api
+Development: http://localhost:3000/api
+Production: https://your-domain.com/api
+```
+
+## Rate Limiting
+
+The API implements rate limiting to prevent abuse:
+
+- **General endpoints**: 100 requests per 15 minutes per IP
+- **Authentication endpoints**: 5 requests per 15 minutes per IP
+
+When rate limit is exceeded, the API returns:
+```json
+{
+  "error": "Too many requests from this IP, please try again later."
+}
+```
+
+Headers include rate limit information:
+```
+RateLimit-Limit: 100
+RateLimit-Remaining: 95
+RateLimit-Reset: 1234567890
+```
+
+## Health Check
+
+**GET** `/health`
+
+Check API server status (no authentication required).
+
+Response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "uptime": 123456
+}
 ```
 
 ## Authentication
